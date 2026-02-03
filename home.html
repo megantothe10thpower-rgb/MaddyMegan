@@ -1,11 +1,114 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Test</title>
-</head>
-<body style="background:black;color:gold;">
-<h1>IT WORKS</h1>
-<p>If you see this, you did it right.</p>
-</body>
-</html>
+<style? <!-- 2. Registration Form -->
+<style>
+  #registerSection {
+    max-width: 400px;
+    margin: 60px auto 0 auto;
+    padding: 40px 32px 32px 32px;
+    background: rgba(40, 0, 0, 0.82);
+    border-radius: 18px;
+    border: 1.2px solid #a92a2a;
+    box-shadow: 0 10px 40px -5px #a92a2a55;
+    color: #ffd7b6;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    position: relative;
+    z-index: 1;
+    animation: modalIn 1.3s cubic-bezier(.22,1.15,.5,1.08);
+  }
+  #registerSection h3 {
+    font-size: 2rem;
+    color: #ffd700;
+    margin-bottom: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.06em;
+  }
+  #registerSection input, #registerSection select {
+    width: 100%;
+    padding: 12px 12px;
+    margin-bottom: 18px;
+    border: 1px solid #b33;
+    border-radius: 8px;
+    background: rgba(24, 0, 0, 0.7);
+    color: #ffd7b6;
+    font-size: 1.06rem;
+    font-family: 'Libre Franklin', sans-serif;
+    transition: border 0.15s;
+  }
+  #registerSection input:focus {
+    border: 1.5px solid #d62727;
+    outline: none;
+  }
+  #registerSection .err {
+    color: #ff3b3b;
+    font-size: 0.96rem;
+    margin-bottom: 10px;
+    min-height: 1.3em;
+  }
+  #registerSection button {
+    padding: 13px 36px;
+    font-size: 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    background: linear-gradient(94deg,#d62727 5%,#9d1c2e 85%);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    box-shadow: 0 4px 24px -5px #a92a2a70;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #registerSection button:disabled {
+    background: #544;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+</style>
+<section id="registerSection">
+  <h3>Private Invitation</h3>
+  <form id="registerForm" autocomplete="off">
+    <div class="err" id="regError"></div>
+    <input type="text" id="name" name="name" maxlength="50" placeholder="Your Name" required>
+    <input type="text" id="nickname" name="nickname" maxlength="10" placeholder="Pick a Nickname" required>
+    <input type="email" id="email" name="email" maxlength="60" placeholder="Email Address" required>
+    <input type="date" id="birthday" name="birthday" required>
+    <button type="submit" id="regSubmit">Request Access</button>
+  </form>
+  <div id="regSuccess" style="display:none;font-size:1.12rem;margin-top:14px;color:#ffd700;">
+    Thank you! Please check your email to confirm registration.
+  </div>
+</section>
+<script>
+  // Nickname validation: ≤10 chars, ≤2 special chars
+  function isNicknameValid(nick) {
+    if (!nick || nick.length > 10) return false;
+    const special = (nick.match(/[^a-zA-Z0-9]/g) || []).length;
+    return special <= 2;
+  }
+  document.getElementById('registerForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const nickname = document.getElementById('nickname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const birthday = document.getElementById('birthday').value;
+    const err = document.getElementById('regError');
+    err.textContent = '';
+    if (!isNicknameValid(nickname)) {
+      err.textContent = 'Nickname: Max 10 chars, 2 special allowed.';
+      return;
+    }
+    // Simple birthday/age check
+    const age = new Date().getFullYear() - new Date(birthday).getFullYear();
+    if (age < 21) {
+      err.textContent = 'Must be 21+ to register.';
+      return;
+    }
+    // Simulate backend save & email (replace with AJAX as needed)
+    document.getElementById('regSubmit').disabled = true;
+    setTimeout(function(){
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('regSuccess').style.display = 'block';
+      // Here, add AJAX to your API/mail system!
+    }, 800);
+  }
+</script>

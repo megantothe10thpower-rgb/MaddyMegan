@@ -1,11 +1,120 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Test</title>
-</head>
-<body style="background:black;color:gold;">
-<h1>IT WORKS</h1>
-<p>If you see this, you did it right.</p>
-</body>
-</html>
+<!-- 1. Age Verification Modal -->
+<style>
+  body {
+    background: url('/assets/images/redroom.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  #ageModalOverlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(18,0,0,0.88);
+    z-index: 99999;
+    display: flex;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  #ageModal {
+    background: rgba(32,8,8,0.97);
+    border-radius: 22px;
+    padding: 52px 34px 34px 34px;
+    box-shadow: 0 12px 60px rgba(0,0,0,0.7);
+    max-width: 420px;
+    text-align: center;
+    color: #ffd7b6;
+    border: 1.5px solid #a92a2a;
+    font-family: 'Cormorant Garamond', serif;
+    animation: modalIn 0.8s cubic-bezier(.22,1.15,.5,1.08);
+    position: relative;
+  }
+  #ageModal h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #ffd700;
+    margin-bottom: 14px;
+    text-shadow: 0 3px 14px #a92a2a88;
+  }
+  #ageModal p {
+    font-size: 1.1rem;
+    color: #ffd7b6;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  #ageModal .age-btns {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 6px;
+  }
+  #ageModal button {
+    background: linear-gradient(94deg,#d62727 5%,#9d1c2e 85%);
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    padding: 13px 36px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    box-shadow: 0 4px 24px -5px #a92a2a70;
+    transition: background 0.2s, transform 0.1s;
+  }
+  #ageModal button:hover {
+    background: linear-gradient(94deg,#9d1c2e 5%,#d62727 85%);
+    transform: translateY(-1.5px) scale(1.025);
+  }
+  #ageModal .disclaimer {
+    font-size: 0.88rem;
+    color: #ffb3b3;
+    margin-top: 22px;
+    opacity: 0.85;
+    line-height: 1.6;
+  }
+  @keyframes modalIn {
+    0% { transform: scale(0.85) translateY(40px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+</style>
+<div id="ageModalOverlay">
+  <div id="ageModal" role="dialog" aria-modal="true" tabindex="1">
+    <h2>Adults Only</h2>
+    <p>
+      <b>Are you 21 or older?</b>
+      <br>
+      This site contains exclusive content intended only for adults.
+    </p>
+    <div class="age-btns">
+      <button id="ageYes">Yes, I am 21+</button>
+      <button id="ageNo">No</button>
+    </div>
+    <div class="disclaimer">
+      By entering, you confirm you are 21+ and agree to our terms. All visitors must be of legal age in their jurisdiction.
+    </div>
+  </div>
+</div>
+<script>
+  if (sessionStorage.getItem('ageVerified')) {
+    document.getElementById('ageModalOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+  } else {
+    document.body.style.overflow = 'hidden';
+    document.getElementById('ageYes').onclick = function() {
+      sessionStorage.setItem('ageVerified', 'true');
+      document.getElementById('ageModalOverlay').style.display = 'none';
+      document.body.style.overflow = '';
+    };
+    document.getElementById('ageNo').onclick = function() {
+      window.location.href = "https://www.google.com";
+    };
+    document.getElementById('ageModalOverlay').onclick = function(e) {
+      if (e.target === this) { e.preventDefault(); }
+    };
+    document.addEventListener('keydown', function(e){
+      if (e.key === "Escape") { e.preventDefault(); }
+    });
+  }
+</script>
+
